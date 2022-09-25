@@ -11,10 +11,8 @@ function App() {
     <BrowserRouter>
       <div className='flex relative dark:bg-main-dark-bg'>
         <div className='fixed right-4 bottom-4' style={{ zIndex:'1000'}}>
-          <TooltipComponent content="settings">
-            <button>
+          <TooltipComponent content="Settings" position='TopLeft'>
               <FiSettings/>
-            </button>
           </TooltipComponent>
         </div>
       </div>
