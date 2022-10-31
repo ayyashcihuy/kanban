@@ -3,6 +3,8 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt"
 import { ClientError } from "./Server/Error";
 import { ServerError } from "./Client/Error";
+import { Secret, sign } from "jsonwebtoken"
+export const SECRET_KEY: Secret = process.env.SECRET_KEY || "budisukasemua"
 
 class UserController {
     protected readonly _user: PrismaClient;
@@ -71,15 +73,17 @@ class UserController {
         })
 
         if (user === undefined || user === null) {
-            new ClientError(404, "User not found!")
+            throw new ClientError(404, "User not found!")
         }
 
 
         try {
             if (await this.comparePassword(password, user?.password)) {
+                const token = sign({userId: email}, SECRET_KEY, {expiresIn: '2h'})
+
                 res.status(200).json({
                     message: `User ${email} login success!!`,
-                    token: "nih"
+                    token
                 })
             } else {
                 res.status(403).json({
@@ -100,7 +104,7 @@ class UserController {
 
     private async comparePassword(inputPassword: string, userPassword: string | undefined): Promise<boolean> {
         const input = inputPassword ?? "";
-        const user = userPassword ?? ""
+        const user = userPassword ?? "";
         return await bcrypt.compare(input, user);
     }
 }

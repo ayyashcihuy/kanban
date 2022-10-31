@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import { PrismaClient as UserClient } from "@prisma/client";
 import UserController from "./UserController";
 
@@ -34,6 +34,7 @@ app.use(express.json());
 
     app.post("/api/v1/signup", (req, res) => controller.createUser(req, res))
     app.post("/api/v1/signin", (req, res) => controller.loginUser(req, res))
+
 })();
 
 
